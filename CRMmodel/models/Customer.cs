@@ -7,29 +7,23 @@ namespace CRMmodel.models
 {
     public class Customer
     {
+        //Properties
+        //primary key
+        public int Id { get; set; }
+
+        //attributes
         public string CustomerName { get; set; }
+        public string Address { get; set; }
         public float Balance { get; set; }
+        public string VatNumber { get; set; }
+        public string Phone { get; set; }
+        public decimal TotalGross { get; set; }
+        public Boolean IsActive { get; set; }
+        public DateTime Dob { get; set; }
         public DateTime RegistrationDate { get; set; }
 
-        public override string ToString()
-        {
-                return "CustomerName: " + CustomerName
-            + " Balance: " + Balance
-            + " RegistrationDate: " + RegistrationDate;
-        }
+        //foreign keys
+        public List<Order> Orders { get; set; }
 
-        public static Customer createCustomer()
-        {
-            Console.WriteLine("Give the name of the customer");
-            string customerName = Console.ReadLine();
-
-            return new Customer
-            {
-                CustomerName = customerName,
-                Balance = 0,
-                RegistrationDate = DateTime.Now
-            };
-
-        }
     }
 }

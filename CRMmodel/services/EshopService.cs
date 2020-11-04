@@ -1,6 +1,8 @@
-﻿using CRMmodel.models;
+﻿using CRMmodel.CRMDBContext;
+using CRMmodel.models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CRMmodel.services
@@ -9,32 +11,21 @@ namespace CRMmodel.services
     {
         public void MainProcess()
         {
-            Console.WriteLine("CRM Application!");
-                var customer = Customer.createCustomer();
+            //create or insert
+            Customer customer = new Customer {  CustomerName="Panagiotis", Address="Athina", Balance=100, 
+                Dob=new DateTime(1999,8,1)};
+            Console.WriteLine(customer.Id);
+            using AppDbContext appDb = new AppDbContext();
+            appDb.Customers.Add(customer);
+            appDb.SaveChanges();
+            Console.WriteLine(customer.Id);
 
-                var Order = new Order
-            {
-                Customer = customer,
-                Products = new List<Product> {  },
-                Date = DateTime.Now
-            };
+            //read or select
+            Customer customer1 = appDb.Customers.Find(1);
+            Console.WriteLine(customer1.CustomerName);
 
-            for( int i=0;i<3;i++)
-                  Order.Products.Add( Product.createProduct() );
-           
-            foreach( Product product in Order.Products)
-            {
-                Console.WriteLine(product);
-            }
-
-
-            //   Product product;
-
-            //Console.WriteLine(product);
-            //Console.WriteLine(customer);
-            //product.IncreasePriceIfBelowLimit(35);
-            //Console.WriteLine(product);
-
+            Customer customer2 = appDb.Customers.Where(p => p.CustomerName.Equals("Sofia")).FirstOrDefault();
+            List<Customer> customers = appDb.Customers.Where(p => p.CustomerName.Equals("Sofia")).ToList();
         }
 
     }

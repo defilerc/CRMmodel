@@ -6,10 +6,16 @@ namespace CRMmodel.models
 {
     public class Order
     {
-        public Customer Customer { get; set; }
-        public List<Product> Products { get; set; }
+        //primary key
+        public int Id { get; set; }
+
+        //attributes
         public DateTime Date { get; set; }
 
+        //foreign keys or relations
+        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
+        public List<OrderProduct> Orderproducts { get; set; }
 
     }
 }
