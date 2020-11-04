@@ -1,5 +1,6 @@
 ﻿using CRMmodel.CRMDBContext;
 using CRMmodel.models;
+using CRMmodel.options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +12,25 @@ namespace CRMmodel.services
     {
         public void MainProcess()
         {
-            //create or insert
-            Customer customer = new Customer {  CustomerName="Panagiotis", Address="Athina", Balance=100, 
-                Dob=new DateTime(1999,8,1)};
-            Console.WriteLine(customer.Id);
-            using AppDbContext appDb = new AppDbContext();
-            appDb.Customers.Add(customer);
-            appDb.SaveChanges();
-            Console.WriteLine(customer.Id);
 
-            //read or select
-            Customer customer1 = appDb.Customers.Find(1);
-            Console.WriteLine(customer1.CustomerName);
+             CustomerOption customerOption = new CustomerOption { FirstName="Filomena", LastName="Panou", 
+                 Address="Athina", Dob=new DateTime(2000,1,23), Email="pan@gmail.com",  };
 
-            Customer customer2 = appDb.Customers.Where(p => p.CustomerName.Equals("Sofia")).FirstOrDefault();
-            List<Customer> customers = appDb.Customers.Where(p => p.CustomerName.Equals("Sofia")).ToList();
+             IBusinessLogic cs = new CustomerService();
+            //Customer customer = cs.CreateCustomer(customerOption);
+
+            List<Customer> customers = cs.FindAll(0, 5);
+
+            customers.ForEach(c => Console.WriteLine(c.CustomerName));
+
+            cs.UpdateCustomer(customerOption, 1);
+            Console.WriteLine("----------------");
+
+
+             customers = cs.FindAll(0, 5);
+
+            customers.ForEach(c => Console.WriteLine(c.CustomerName));
+
         }
 
     }
